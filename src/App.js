@@ -2,13 +2,15 @@ import './App.css';
 import Header from './component/Header';
 import Banner from './component/Banner';
 import Movies from './component/Movie';
+import Watchlist from "./component/Watchlists"
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <div className="App">
+      
       <BrowserRouter>
-        <Header/>
+        <Header />
         <Routes>
           <Route path="/" element={
             <>
@@ -18,8 +20,8 @@ function App() {
           }
           />
           <Route path='/watchlist' element={
-            <div>watchlist component</div>
-          }/>
+            <Watchlist/>
+          } />
         </Routes>
       </BrowserRouter>
     </div>
