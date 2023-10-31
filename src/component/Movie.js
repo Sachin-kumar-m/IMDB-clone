@@ -1,4 +1,24 @@
+import { useState } from "react";
+import { json } from "react-router-dom";
+import {url,options} from "../constant.js"
+
 function Movies() {
+
+  const [movies, setMovies] = useState([])
+  async function getMovies() {
+
+    fetch(url, options)
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(err => console.error('error:' + err));
+      return json
+  };
+  const updateMovies = ()=>{
+    setMovies(getMovies())
+  }
+updateMovies()
+
+ 
     return (
       <div>
         <div className="text-2xl my-8 font-bold text-center underline">
