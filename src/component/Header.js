@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import {BASE_URL,APIKEY} from "../constant.js"
 function Header() {
     return (
         <header className="flex border space-x-8 justify-between items-center py-2 px-2 bg-gray-900 fixed w-full border-transparent">
