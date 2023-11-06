@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 // Consts
 import { options, BASE_URL, APIKEY } from "../constant.js"
+import Loader from "./Loader.js";
+
 
 function Movies() {
 
   const [movies, setMovies] = useState([])
   const [pageNumber, setPages] = useState(1)
+  const [isLoading, setLoading] = useState(true)
 
   const handelNext = () => {
     if (pageNumber === 500) return
@@ -16,10 +19,12 @@ function Movies() {
     setPages(pageNumber - 1)
   }
   const getMovies = () => {
+    setLoading(true)
     fetch(`https://api.themoviedb.org/3/trending/all/day?language=en-US&api_key=${APIKEY}&page=${pageNumber}`, options)
       .then(res => res.json())
       .then(json => setMovies(json.results)) //doing .results bcz json is an object and the useState variable is an array
-      .catch(err => console.error('error:' + err));
+      .catch(err => console.error('error:' + err))
+      .finally(setLoading(false))
   };
 
   useEffect(() => {
@@ -30,7 +35,8 @@ function Movies() {
   return (
     <div>
       <div className="text-2xl my-8 font-bold text-center underline">Trending Movies</div>
-      <div className="flex flex-wrap">
+      {isLoading ? <Loader/>: (
+        <div className="flex flex-wrap">
         {movies.map((movie, index) => {
           const { title = "", name = "", poster_path: path } = movie;
           return (
@@ -48,8 +54,11 @@ function Movies() {
           )
         })}
       </div>
+      ) }
+      
       <div className="flex justify-around space-x-5 my-5">
         <button disabled={pageNumber === 1} className={pageNumber === 1 ? "cursor-not-allowed" : "cursor-pointer hover:scale-150 duration-100"} onClick={handelPrev}>Previous</button>
+        <p>{pageNumber}</p>
         <button className="cursor-pointer hover:scale-150 duration-100" onClick={handelNext}>Next</button>
       </div>
     </div>
