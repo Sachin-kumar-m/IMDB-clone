@@ -6,3 +6,4 @@ export const options = {
         accept: 'application/json',
     }
 };
+export const WATCHLIST_KEY = "WATCHLIST_KEY";
