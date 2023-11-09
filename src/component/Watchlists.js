@@ -1,20 +1,85 @@
+
+import { BASE_URL, WATCHLIST_KEY } from "../constant"
+
 function Watchlist() {
+
+    const getWatchlist = () => {
+        return localStorage.getItem(WATCHLIST_KEY)
+    }
+
+    const showWatchlist = () => {
+        const items = JSON.parse(getWatchlist())
+        return items
+    }
+    let items;
+    if (showWatchlist()) {
+        items = showWatchlist()
+    }
+    else {
+        items = []
+    }
+    console.log(items[0].id)
     return (
-        <div>
-            <div className="w-full flex pl-20 pt-[2.75rem] h-64 border-solid border-black">
-                <img alt="movie" className="w-[96px] h-[142px] mt-[1.75rem] hover:scale-110 duration-300 rounded-xl" src="https://m.media-amazon.com/images/S/pv-target-images/703c93b8ce2fc77bd7bbed52364161a25f1dc078efab6f5c9fbb2b82d042f89e._UR1920,1080_AGaverage_SX1080_FMwebp_.jpg"/>
-            </div>
-            <div className="w-full flex pl-20 pt-[2.75rem] h-64 border-solid border-black">
-                <img alt="movie" className="w-[96px] h-[142px] mt-[1.75rem] hover:scale-110 duration-300 rounded-xl" src="https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/9c2d5089c2932f6e704e639cd334975f2e4ed028e5d5ef947cfbefc21d614f56._RI_TTW_SX1920_FMwebp_.jpg"/>
-            </div>
-            <div className="w-full flex pl-20 pt-[2.75rem] h-64 border-solid border-black">
-                <img alt="movie" className="w-[96px] h-[142px] mt-[1.75rem] hover:scale-110 duration-300 rounded-xl" src="https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/9c2d5089c2932f6e704e639cd334975f2e4ed028e5d5ef947cfbefc21d614f56._RI_TTW_SX1920_FMwebp_.jpg"/>
-            </div>
-            <div className="w-full flex pl-20 pt-[2.75rem] h-64 border-solid border-black">
-                <img alt="movie" className="w-[96px] h-[142px] mt-[1.75rem] hover:scale-110 duration-300 rounded-xl" src="https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/9c2d5089c2932f6e704e639cd334975f2e4ed028e5d5ef947cfbefc21d614f56._RI_TTW_SX1920_FMwebp_.jpg"/>
-            </div>
+        <div className="relative overflow-x-auto mx-auto  shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-[42px]">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" className="text-xl px-6 py-3">
+                            Poster
+                        </th>
+                        <th scope="col" className="text-xl px-6 py-3">
+                            Title
+                        </th>
+                        <th scope="col" className="text-xl px-6 py-3">
+                            Average Rating
+                        </th>
+                        <th scope="col" className="text-xl px-6 py-3">
+                            Genre(s)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {items.map(
+                        ({
+                            id,
+                            title = "",
+                            voteAverage,
+                            path,
+                        }) => (
+                            <tr
+                                key={id}
+                                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                            >
+                                <td className="px-6 py-4">
+                                    <img
+                                        className="w-[160px] h-[30vh] min-h-[200px]"
+                                        src={`${BASE_URL}/${path}`}
+                                        alt={title}
+                                    />
+                                </td>
+                                <td className="text-xl px-6 py-4 items-center">
+                                    {title}
+                                </td>
+                                <td className="text-xl px-6 py-4">{voteAverage}</td>
+                                <td className="text-xl px-6 py-4">
+                                </td>
+                                <td
+                                    className="text-xl space-x-1 px-6 py-4 text-right cursor-pointer text-red-200 hover:text-red-500"
+
+                                >
+                                    <span>Delete</span>
+                                    <span>🗑️</span>
+                                </td>
+                            </tr>
+                        )
+                    )}
+                </tbody>
+            </table>
         </div>
     )
+
 }
+
+
 
 export default Watchlist
