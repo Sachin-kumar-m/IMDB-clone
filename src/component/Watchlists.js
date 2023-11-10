@@ -18,7 +18,7 @@ function Watchlist() {
     else {
         items = []
     }
-    console.log(items[0].id)
+
     return (
         <div className="relative overflow-x-auto mx-auto  shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-[42px]">
@@ -64,7 +64,7 @@ function Watchlist() {
                                 <td className="text-xl px-6 py-4">
                                 </td>
                                 <td
-                                    className="text-xl space-x-1 px-6 py-4 text-right cursor-pointer text-red-200 hover:text-red-500"
+                                    className="text-xl space-x-1 px-6 py-4 text-right cursor-pointer text-red-200 hover:text-red-500 hover:scale-110"
 
                                 >
                                     <span>Delete</span>
