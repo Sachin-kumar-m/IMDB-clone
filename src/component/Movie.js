@@ -70,10 +70,10 @@ function Movies() {
           {movies.map((movie, index) => {
             const { title = "", name = "", poster_path: path, } = movie;
             return (
-              <div key={index} onClick={() => setWatchlist(movie)} className="cursor-pointer">
+              <div key={index}>
                 <div className="mx-[20px] mb-[12px] flex space-x-8">
-                  <div
-                    className="w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
+                  <div onClick={() => setWatchlist(movie)} 
+                    className="cursor-pointer w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
                     style={{
                       backgroundImage:
                         `url(${BASE_URL}${path})`

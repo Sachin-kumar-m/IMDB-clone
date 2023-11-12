@@ -1,10 +1,8 @@
 
-import { BASE_URL, WATCHLIST_KEY } from "../constant"
+import { BASE_URL,getWatchlist } from "../constant"
 
 function Watchlist() {
-    const getWatchlist = () => {
-        return localStorage.getItem(WATCHLIST_KEY)
-    }
+   
     const showWatchlist = () => {
         const items = JSON.parse(getWatchlist())
         return items
