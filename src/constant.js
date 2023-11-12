@@ -7,3 +7,7 @@ export const options = {
     }
 };
 export const WATCHLIST_KEY = "WATCHLIST_KEY";
+
+export const getWatchlist = () => {
+    return localStorage.getItem(WATCHLIST_KEY)
+  }
