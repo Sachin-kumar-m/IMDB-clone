@@ -2,11 +2,9 @@
 import { BASE_URL, WATCHLIST_KEY } from "../constant"
 
 function Watchlist() {
-
     const getWatchlist = () => {
         return localStorage.getItem(WATCHLIST_KEY)
     }
-
     const showWatchlist = () => {
         const items = JSON.parse(getWatchlist())
         return items
@@ -18,12 +16,11 @@ function Watchlist() {
     else {
         items = []
     }
-
     return (
         <div className="relative overflow-x-auto mx-auto  shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-[42px]">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
+                    <tr className="text-center">
                         <th scope="col" className="text-xl px-6 py-3">
                             Poster
                         </th>
@@ -36,6 +33,7 @@ function Watchlist() {
                         <th scope="col" className="text-xl px-6 py-3">
                             Genre(s)
                         </th>
+                        <th scope="col" className="text-xl px-6 py-3">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,32 +41,35 @@ function Watchlist() {
                         ({
                             id,
                             title = "",
-                            voteAverage,
+                            avg,
                             path,
+                            gener,
                         }) => (
                             <tr
                                 key={id}
-                                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
-                                <td className="px-6 py-4">
+                                <td className="px-6 py-4 flex justify-center items-center]">
                                     <img
-                                        className="w-[160px] h-[30vh] min-h-[200px]"
+                                        className="w-[160px] h-[30vh] min-h-[200px] rounded-2xl"
                                         src={`${BASE_URL}/${path}`}
                                         alt={title}
                                     />
                                 </td>
-                                <td className="text-xl px-6 py-4 items-center">
+                                <td className="text-xl px-6 py-4 text-center">
                                     {title}
                                 </td>
-                                <td className="text-xl px-6 py-4">{voteAverage}</td>
-                                <td className="text-xl px-6 py-4">
+                                <td className="text-xl px-6 py-4 text-center">{avg}</td>
+                                <td className="text-xl px-6 py-4">{gener}
                                 </td>
                                 <td
-                                    className="text-xl space-x-1 px-6 py-4 text-right cursor-pointer text-red-200 hover:text-red-500 hover:scale-110"
+                                    className="text-xl space-x-1 px-6 py-4 cursor-pointer text-red-200"
 
                                 >
+                                    <div className="hover:scale-125 duration-200 hover:text-red-700">
                                     <span>Delete</span>
                                     <span>🗑️</span>
+                                    </div>
                                 </td>
                             </tr>
                         )
