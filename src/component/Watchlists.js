@@ -1,19 +1,27 @@
 
-import { BASE_URL,getWatchlist } from "../constant"
+import React from "react"
+import { useState,  } from "react"
+import { BASE_URL, getWatchlist, WATCHLIST_KEY } from "../constant"
+
 
 function Watchlist() {
-   
-    const showWatchlist = () => {
-        const items = JSON.parse(getWatchlist())
-        return items
+    
+    let [watchlist, setMedia] = useState(getWatchlist())
+
+    console.log(watchlist)
+    const removeMediaFromLocalStorage = (mediaId) => {
+        if (watchlist.length === 1) {
+          localStorage.removeItem(WATCHLIST_KEY)
+          setMedia([])
+          return
+        }
+        let updatedWatchlist = watchlist.filter((media) => media.id !== mediaId);
+        console.log(updatedWatchlist)
+        localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updatedWatchlist));
+        setMedia(updatedWatchlist);
     }
-    let items;
-    if (showWatchlist()) {
-        items = showWatchlist()
-    }
-    else {
-        items = []
-    }
+
+
     return (
         <div className="relative overflow-x-auto mx-auto  shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-[42px]">
@@ -26,6 +34,9 @@ function Watchlist() {
                             Title
                         </th>
                         <th scope="col" className="text-xl px-6 py-3">
+                            Release Date
+                        </th>
+                        <th scope="col" className="text-xl px-6 py-3">
                             Average Rating
                         </th>
                         <th scope="col" className="text-xl px-6 py-3">
@@ -35,13 +46,14 @@ function Watchlist() {
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map(
+                    {watchlist.map(
                         ({
                             id,
                             title = "",
                             avg,
                             path,
                             gener,
+                            date,
                         }) => (
                             <tr
                                 key={id}
@@ -57,16 +69,19 @@ function Watchlist() {
                                 <td className="text-xl px-6 py-4 text-center">
                                     {title}
                                 </td>
+                                <td className="text-xl px-6 py-4 text-center">
+                                    {date}
+                                </td>
                                 <td className="text-xl px-6 py-4 text-center">{avg}</td>
                                 <td className="text-xl px-6 py-4">{gener}
                                 </td>
                                 <td
-                                    className="text-xl space-x-1 px-6 py-4 cursor-pointer text-red-200"
-
+                                    className="text-xl space-x-1 px-6 py-4 text-red-200"
+                                
                                 >
-                                    <div className="hover:scale-125 duration-200 hover:text-red-700">
-                                    <span>Delete</span>
-                                    <span>🗑️</span>
+                                    <div onClick={() => removeMediaFromLocalStorage(id)} className="hover:scale-125 duration-200 hover:text-red-700 cursor-pointer">
+                                        <span>Delete</span>
+                                        <span >🗑️</span>
                                     </div>
                                 </td>
                             </tr>
