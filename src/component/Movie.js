@@ -9,7 +9,7 @@ function Movies() {
   const [movies, setMovies] = useState([])
   const [pageNumber, setPages] = useState(1)
   const [isLoading, setLoading] = useState(true)
-  const [watchList, setList] = useState(JSON.parse(getWatchlist()))
+  const [watchList, setList] = useState(getWatchlist())
   const getMovies = () => {
     setLoading(true)
     fetch(`https://api.themoviedb.org/3/trending/all/day?language=en-US&api_key=${APIKEY}&page=${pageNumber}`, options)
@@ -42,7 +42,7 @@ function Movies() {
 
     let value;
     if (currentItems) {
-      value = JSON.parse(currentItems)
+      value = currentItems
     }
     else {
       value = []
@@ -54,6 +54,7 @@ function Movies() {
       path: movieObj.poster_path,
       avg: movieObj.vote_average,
       gener: movieObj.genre_ids,
+      date : movieObj.release_date||movieObj.first_air_date
     },]
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(value))
     setList(value)
