@@ -6,7 +6,6 @@ function Header() {
                 <NavLink to="/" className="hover:scale-110 duration-100">Movies</NavLink>
                 <NavLink to="/watchlist" className="hover:scale-110 duration-100">Watchlist</NavLink>
             </div>
-            <input placeholder="Search" />
         </header>
     );
 
