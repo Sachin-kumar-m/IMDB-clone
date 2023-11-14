@@ -33,7 +33,6 @@ function Movies() {
     setPages(pageNumber - 1)
   }
   const isInLocalStorage = (movieID, watchListMovies) => {
-    if (watchListMovies===null) return
     return watchListMovies.find((movie) => movie.id === movieID)
   }
   const setWatchlist = (movieObj) => {
@@ -80,7 +79,7 @@ function Movies() {
                         `url(${BASE_URL}${path})`
                     }}
                   >
-                    <div className="p-2 absolute right-1 top-1 text-2xl hover:scale-150 duration-200"><button>{isInLocalStorage(movie.id,watchList)? "❤️":"🤍"}</button></div>
+                    <div className="p-2 bg-black absolute right-1 top-1 text-2xl rounded-[10px]"><button className="hover:scale-150 duration-200 ">{isInLocalStorage(movie.id,watchList)? "❤️":"🤍"}</button></div>
                     <div className="flex items-center justify-center text-xl md:text-3xl bg-gray-900 bg-opacity-60 p-4 text-white w-full rounded-b-[1rem]">{title || name}</div>
                   </div>
                 </div>

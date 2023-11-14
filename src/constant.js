@@ -6,7 +6,7 @@ export const options = {
         accept: 'application/json',
     }
 };
-export const WATCHLIST_KEY = "WATCHLIST_KEY";
+export const WATCHLIST_KEY = "MY_WATCHLIST";
 
 export const getWatchlist = () => {
     const watchList = localStorage.getItem(WATCHLIST_KEY);
