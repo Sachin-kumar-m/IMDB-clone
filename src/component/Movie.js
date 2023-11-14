@@ -1,7 +1,8 @@
 //hooks
 import { useState, useEffect } from "react";
 // Consts
-import { options, BASE_URL, APIKEY, WATCHLIST_KEY,getWatchlist} from "../constant.js"
+import { options, BASE_URL, APIKEY, WATCHLIST_KEY, getWatchlist } from "../constant.js"
+import { FaSistrix } from "react-icons/fa6";
 
 
 function Movies() {
@@ -9,6 +10,7 @@ function Movies() {
   const [movies, setMovies] = useState([])
   const [pageNumber, setPages] = useState(1)
   const [isLoading, setLoading] = useState(true)
+  const [query,setQuery] = useState("")
   const [watchList, setList] = useState(getWatchlist())
   const getMovies = () => {
     setLoading(true)
@@ -19,10 +21,24 @@ function Movies() {
       .finally(setLoading(false))
   };
 
+  const searchMovies = () => {
+    setLoading(true)
+    fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${APIKEY}&language=en-US&page=${pageNumber}`, options)
+      .then(res => res.json())
+      .then(json => setMovies(json.results)) //doing .results bcz json is an object and the useState variable is an array
+      .catch(err => console.error('error:' + err))
+      .finally(setLoading(false))
+  };
+  // 
   useEffect(() => {
-    getMovies()
+    if (query) {
+      searchMovies()
+    }
+    else {
+      getMovies()
+    }
     // eslint-disable-next-line
-  }, [pageNumber])
+  }, [pageNumber,query])
 
   const handelNext = () => {
     if (pageNumber === 500) return
@@ -48,8 +64,8 @@ function Movies() {
     }
     if (isInLocalStorage(movieObj.id, value)) return
     value = [...value, {
-      title: movieObj.title || movieObj.name,
       id: movieObj.id,
+      title: movieObj.title || movieObj.name,
       path: movieObj.poster_path,
       avg: movieObj.vote_average,
       gener: movieObj.genre_ids,
@@ -65,13 +81,20 @@ function Movies() {
   return (
     <div>
       <div className="text-2xl my-8 font-bold text-center underline">Trending Movies</div>
+      <div className="flex justify-end items-center">
+        <span><FaSistrix /></span>
+        <div className="form mr-10">
+          <input value={query} onChange={(e)=>setQuery(e.target.value)} className="input text-xl" placeholder="Search..." required="" type="text" />
+            <span className="input-border"></span>
+        </div>
+      </div>
       {isLoading ? <div className="loader"></div> : (
         <div className="flex flex-wrap">
           {movies.map((movie, index) => {
             const { title = "", name = "", poster_path: path, } = movie;
             return (
               <div key={index}>
-                <div className="mx-[20px] mb-[12px] flex space-x-8">
+                <div className="mx-[20px] mb-[16px] flex space-x-8">
                   <div onClick={() => setWatchlist(movie)} 
                     className="cursor-pointer w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
                     style={{
