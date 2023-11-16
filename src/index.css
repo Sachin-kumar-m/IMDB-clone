@@ -56,6 +56,14 @@ code {
   content: "Sort by ID"
 }
 
+#delete:hover span {
+  display: none
+}
+
+#delete:hover:before {
+  content: "Delete All"
+}
+
 
 .form {
   --width-of-input: 150px;

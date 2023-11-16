@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 // Consts
 import { options, BASE_URL, APIKEY, WATCHLIST_KEY, getWatchlist } from "../constant.js"
-import { FaSistrix } from "react-icons/fa6";
+import { ImSearch } from "react-icons/im";
 
 
 function Movies() {
@@ -14,7 +14,7 @@ function Movies() {
   const [watchList, setList] = useState(getWatchlist())
   const getMovies = () => {
     setLoading(true)
-    fetch(`https://api.themoviedb.org/3/trending/all/day?language=en-US&api_key=${APIKEY}&page=${pageNumber}`, options)
+    fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&api_key=${APIKEY}&page=${pageNumber}`, options)
       .then(res => res.json())
       .then(json => setMovies(json.results)) //doing .results bcz json is an object and the useState variable is an array
       .catch(err => console.error('error:' + err))
@@ -74,7 +74,16 @@ function Movies() {
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(value))
     setList(value)
   }
-
+  const removeMediaFromLocalStorage = (mediaId) => {
+    if (watchList.length === 1) {
+      localStorage.removeItem(WATCHLIST_KEY)
+      setList([])
+      return
+    }
+    let updatedWatchlist = watchList.filter((media) => media.id !== mediaId);
+    localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updatedWatchlist));
+    setList(updatedWatchlist);
+  }   
   
 
 
@@ -82,7 +91,7 @@ function Movies() {
     <div>
       <div className="text-2xl my-8 font-bold text-center underline">Trending Movies</div>
       <div className="flex justify-end items-center">
-        <span><FaSistrix /></span>
+        <span><ImSearch /></span>
         <div className="form mr-10">
           <input value={query} onChange={(e)=>setQuery(e.target.value)} className="input text-xl" placeholder="Search..." required="" type="text" />
             <span className="input-border"></span>
@@ -95,7 +104,14 @@ function Movies() {
             return (
               <div key={index}>
                 <div className="mx-[20px] mb-[16px] flex space-x-8">
-                  <div onClick={() => setWatchlist(movie)} 
+                  <div onClick={() => {
+                    if (isInLocalStorage(movie.id, watchList)) {
+                      removeMediaFromLocalStorage(movie.id)
+                    }
+                    else {
+                      setWatchlist(movie)
+                    }
+                  }}
                     className="cursor-pointer w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
                     style={{
                       backgroundImage:
@@ -103,7 +119,7 @@ function Movies() {
                     }}
                   >
                     <div className="p-2 bg-black absolute right-1 top-1 text-2xl rounded-[10px]"><button className="hover:scale-150 duration-200 ">{isInLocalStorage(movie.id,watchList)? "❤️":"🤍"}</button></div>
-                    <div className="flex items-center justify-center text-xl md:text-3xl bg-gray-900 bg-opacity-60 p-4 text-white w-full rounded-b-[1rem]">{title || name}</div>
+                    <div className="flex items-center justify-center text-lg md:text-3xl bg-gray-900 bg-opacity-60 p-4 text-white w-full rounded-b-[1rem]">{title || name}</div>
                   </div>
                 </div>
               </div>
