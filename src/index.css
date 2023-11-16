@@ -64,6 +64,13 @@ code {
   content: "Delete All"
 }
 
+#titleSort:hover span {
+  display: none
+}
+
+#titleSort:hover:before {
+  content: "Sort by Title"
+}
 
 .form {
   --width-of-input: 150px;

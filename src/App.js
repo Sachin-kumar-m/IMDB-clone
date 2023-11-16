@@ -21,6 +21,12 @@ function App() {
           <Route path='/watchlist' element={
             <Watchlist/>
           } />
+          <Route path="*" element=
+            {< >
+              <Banner />
+              <Movies />
+            </>}
+          />
         </Routes>
       </BrowserRouter>
     </div>

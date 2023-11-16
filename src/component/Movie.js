@@ -85,6 +85,14 @@ function Movies() {
     setList(updatedWatchlist);
   }   
   
+  const handleWatchlist = (movieObj) => {
+    if (isInLocalStorage(movieObj.id, watchList)) {
+      removeMediaFromLocalStorage(movieObj.id)
+    }
+    else {
+      setWatchlist(movieObj)
+    }
+  }
 
 
   return (
@@ -104,14 +112,7 @@ function Movies() {
             return (
               <div key={index}>
                 <div className="mx-[20px] mb-[16px] flex space-x-8">
-                  <div onClick={() => {
-                    if (isInLocalStorage(movie.id, watchList)) {
-                      removeMediaFromLocalStorage(movie.id)
-                    }
-                    else {
-                      setWatchlist(movie)
-                    }
-                  }}
+                  <div onClick={() => handleWatchlist(movie)}
                     className="cursor-pointer w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
                     style={{
                       backgroundImage:

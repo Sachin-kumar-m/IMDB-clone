@@ -27,7 +27,21 @@ function Watchlist() {
         console.log(updatedWatchlist)
         setMedia(updatedWatchlist)
     }
-
+    const sortByTitle = () => {
+        let temp = [...watchlist]
+        const updatedWatchlist = temp.sort((a, b) => {
+            if ( a.title < b.title ){
+                return -1;
+              }
+              if ( a.title > b.title ){
+                return 1;
+              }
+              return 0;
+        })
+        console.log(updatedWatchlist)
+        setMedia(updatedWatchlist)
+    }
+    
     return (
         <>
             {watchlist.length === 0 ? <div className="h-[100%] w-[100%] absolute flex items-center justify-center text-3xl">Watchlist is Empty</div> : (
@@ -41,8 +55,8 @@ function Watchlist() {
                                 <th scope="col" className="text-xl px-6 py-3">
                                     Poster
                                 </th>
-                                <th scope="col" className="text-xl px-6 py-3">
-                                    Title
+                                <th scope="col" className="text-xl px-6 py-3 cursor-pointer" id="titleSort" onClick={() => sortByTitle()}>
+                                    <span>title</span>
                                 </th>
                                 <th scope="col" className="text-xl px-6 py-3">
                                     Release Date
