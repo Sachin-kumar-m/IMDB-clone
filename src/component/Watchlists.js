@@ -17,7 +17,10 @@ function Watchlist() {
         localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updatedWatchlist));
         setMedia(updatedWatchlist);
     }   
-
+    const deleteAll = () => {
+        localStorage.removeItem(WATCHLIST_KEY)
+        setMedia([])
+    }
     const sortByID = () => {
         let temp = [...watchlist]
         const updatedWatchlist = temp.sort((a, b) => a.id - b.id)
@@ -50,7 +53,7 @@ function Watchlist() {
                                 <th scope="col" className="text-xl px-6 py-3">
                                     Genre(s)
                                 </th>
-                                <th scope="col" className="text-xl px-6 py-3">Delete</th>
+                                <th scope="col" id ="delete" onClick={()=>deleteAll()} className="text-xl px-6 py-3 hover:cursor-pointer w-52 hover:text-red-700"><span>Delete</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,7 +95,7 @@ function Watchlist() {
                                         >
                                             <div onClick={() => removeMediaFromLocalStorage(id)} className="hover:scale-125 duration-200 hover:text-red-700 cursor-pointer">
                                                 <span>Delete</span>
-                                                <span >🗑️</span>
+                                                <span>🗑️</span>
                                             </div>
                                         </td>
                                     </tr>
