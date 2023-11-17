@@ -84,16 +84,14 @@ function Movies() {
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updatedWatchlist));
     setList(updatedWatchlist);
   }   
-  
+
   const handleWatchlist = (movieObj) => {
     if (isInLocalStorage(movieObj.id, watchList)) {
       removeMediaFromLocalStorage(movieObj.id)
+      return
     }
-    else {
-      setWatchlist(movieObj)
-    }
+    setWatchlist(movieObj)
   }
-
 
   return (
     <div>
