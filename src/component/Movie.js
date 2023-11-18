@@ -21,7 +21,7 @@ function Movies() {
       .finally(() => {
         setTimeout(() => {
           setLoading(false)
-        },300)
+        },200)
       })
   };
 
@@ -31,8 +31,11 @@ function Movies() {
       .then((res) => res.json())
       .then((json) => setMovies(json.results)) //doing .results bcz json is an object and the useState variable is an array
       .catch((err) => console.error('error:' + err))
-      .finally(
-        setLoading(false)
+      .finally(() => {
+        setTimeout(() => {
+          setLoading(false)
+        },10)
+      }
       )
   };
   // 
