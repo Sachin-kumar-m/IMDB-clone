@@ -24,9 +24,9 @@ function Movies() {
   const searchMovies = () => {
     setLoading(true)
     fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${APIKEY}&language=en-US&page=${pageNumber}`, options)
-      .then(res => res.json())
-      .then(json => setMovies(json.results)) //doing .results bcz json is an object and the useState variable is an array
-      .catch(err => console.error('error:' + err))
+      .then((res) => res.json())
+      .then((json) => setMovies(json.results)) //doing .results bcz json is an object and the useState variable is an array
+      .catch((err) => console.error('error:' + err))
       .finally(setLoading(false))
   };
   // 
@@ -68,7 +68,7 @@ function Movies() {
       title: movieObj.title || movieObj.name,
       path: movieObj.poster_path,
       avg: movieObj.vote_average,
-      gener: movieObj.genre_ids,
+      generID: movieObj.genre_ids,
       date : movieObj.release_date||movieObj.first_air_date
     },]
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(value))
