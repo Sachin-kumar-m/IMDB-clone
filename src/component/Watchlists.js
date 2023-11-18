@@ -23,7 +23,11 @@ function Watchlist() {
                 setGeners(temp)
             })
             .catch((err) => console.error('error:' + err))
-            .finally(setLoading(false))
+            .finally(() => {
+                setTimeout(() => {
+                  setLoading(false)
+                },300)
+              })
     }
     useEffect(() => {
         getGeners()
@@ -79,13 +83,13 @@ function Watchlist() {
                                     <th scope="col" className="text-xl px-6 py-3">
                                         Poster
                                     </th>
-                                    <th scope="col" className="text-xl px-6 py-3 cursor-pointer" id="titleSort" onClick={() => sortByTitle()}>
+                                    <th scope="col" className="text-xl px-6 py-3 cursor-pointer w-[15rem]" id="titleSort" onClick={() => sortByTitle()}>
                                         <span>title</span>
                                     </th>
-                                    <th scope="col" className="text-xl px-6 py-3">
+                                    <th scope="col" className="text-xl px-6 py-3 w-[12rem]">
                                         Release Date
                                     </th>
-                                    <th scope="col" className="text-xl px-6 py-3">
+                                    <th scope="col" className="text-xl px-6 py-3 w-[15rem]">
                                         Average Rating
                                     </th>
                                     <th scope="col" className="text-xl px-6 py-3">
@@ -118,14 +122,14 @@ function Watchlist() {
                                                     alt={title}
                                                 />
                                             </td>
-                                            <td className="text-xl px-6 py-4 text-center">
+                                            <td className="text-xl px-6 py-4 text-center w-20">
                                                 {title}
                                             </td>
                                             <td className="text-xl px-6 py-4 text-center">
                                                 {date}
                                             </td>
                                             <td className="text-xl px-6 py-4 text-center">{avg}</td>
-                                            <td className="text-xl px-6 py-4">{generID.map(geners=>generMap[geners]).join(" , ")}
+                                            <td className="text-xl px-6 py-4 max-w-[8rem]">{generID.map(geners=>generMap[geners]).join(", ")}
                                             </td>
                                             <td
                                                 className="text-xl space-x-1 px-6 py-4 text-red-200"
