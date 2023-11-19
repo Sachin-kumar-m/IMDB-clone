@@ -8,7 +8,7 @@ export const options = {
 };
 export const WATCHLIST_KEY = "MY_WATCHLIST";
 
-export const getWatchlist = () => {
+export const getWatchlistFromlocalStorage = () => {
     const watchList = localStorage.getItem(WATCHLIST_KEY);
     let value;
     if (watchList) {

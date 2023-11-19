@@ -1,7 +1,7 @@
 //hooks
 import { useState, useEffect } from "react";
 // Consts
-import { options, BASE_URL, APIKEY, WATCHLIST_KEY, getWatchlist } from "../constant.js"
+import { options, BASE_URL, APIKEY, WATCHLIST_KEY, getWatchlistFromlocalStorage } from "../constant.js"
 import { ImSearch } from "react-icons/im";
 
 
@@ -11,7 +11,7 @@ function Movies() {
   const [pageNumber, setPages] = useState(1)
   const [isLoading, setLoading] = useState(true)
   const [query,setQuery] = useState("")
-  const [watchList, setList] = useState(getWatchlist())
+  const [watchList, setList] = useState(getWatchlistFromlocalStorage())
   const getMovies = () => {
     setLoading(true)
     fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&api_key=${APIKEY}&page=${pageNumber}`, options)
@@ -61,7 +61,7 @@ function Movies() {
     return watchListMovies.find((movie) => movie.id === movieID)
   }
   const setWatchlist = (movieObj) => {
-    const currentItems = getWatchlist()
+    const currentItems = getWatchlistFromlocalStorage()
     // console.log(JSON.parse(currentItems))
 
     let value;

@@ -72,6 +72,13 @@ code {
   content: "Sort by Title"
 }
 
+#avg:hover span {
+  display: none
+}
+
+#avg:hover:before {
+  content: "Sort"
+}
 .form {
   --width-of-input: 150px;
   --border-height: 1px;
@@ -120,3 +127,7 @@ code {
  /* input:valid ~ .input-border{
    width: 100%;
  } */
+
+ select:focus {
+  outline: none;
+ }
