@@ -1,12 +1,12 @@
 
 import React from "react"
 import { useState, useEffect } from "react"
-import { APIKEY, BASE_URL, getWatchlist, options, WATCHLIST_KEY } from "../constant"
+import { APIKEY, BASE_URL, getWatchlistFromlocalStorage, options, WATCHLIST_KEY } from "../constant"
 
 
 function Watchlist() {
 
-    const [watchlist, setMedia] = useState(getWatchlist())
+    const [watchlist, setMedia] = useState(getWatchlistFromlocalStorage())
     const [generMap, setGeners] = useState({})
     const [isLoading, setLoading] = useState(true)
 
@@ -52,6 +52,13 @@ function Watchlist() {
         // console.log(updatedWatchlist)
         setMedia(updatedWatchlist)
     }
+
+    const sortbyRating = () => {
+        let temp = [...watchlist]
+        const updatedWatchlist = temp.sort((a, b) => a.avg - b.avg)
+        // console.log(updatedWatchlist)
+        setMedia(updatedWatchlist)
+    }
     const sortByTitle = () => {
         let temp = [...watchlist]
         const updatedWatchlist = temp.sort((a, b) => {
@@ -63,9 +70,24 @@ function Watchlist() {
             }
             return 0;
         })
-        // console.log(updatedWatchlist)
+        console.log(updatedWatchlist)
         setMedia(updatedWatchlist)
     }
+    const handleFilter = (event) => {
+        const selectedValue = event.target.value
+        if (selectedValue === "All") {
+            setMedia(getWatchlistFromlocalStorage())
+            console.log(watchlist)
+        }
+        else {
+            const filteredValue = getWatchlistFromlocalStorage().filter(({ generID }) => {
+                return generID.includes(parseInt(selectedValue))
+                // console.log(filteredValue)
+            })
+            setMedia(filteredValue)
+        }
+    }
+   
     if (isLoading) {
         return <div className="loader absolute top-[50%]"></div>
     }
@@ -89,11 +111,17 @@ function Watchlist() {
                                     <th scope="col" className="text-xl px-6 py-3 w-[12rem]">
                                         Release Date
                                     </th>
-                                    <th scope="col" className="text-xl px-6 py-3 w-[15rem]">
-                                        Average Rating
+                                    <th scope="col" id="avg" className="text-xl px-6 py-3 w-[15rem] cursor-pointer" onClick={() => sortbyRating()}>
+                                        <span>Average Rating</span>
                                     </th>
                                     <th scope="col" className="text-xl px-6 py-3">
-                                        Genre(s)
+                                        {/* <label>Genre(s)</label> */}
+                                        <select type="button" onChange={handleFilter}>
+                                            <option value="All">GENRE(s)</option>
+                                            {getWatchlistFromlocalStorage().map(({generID}=[])=>{
+                                               return generID.map((geners)=><option key={geners} value={geners}>{generMap[geners]}</option>)
+                                            })}
+                                        </select>
                                     </th>
                                     <th scope="col" id="delete" onClick={() => deleteAll()} className="text-xl px-6 py-3 hover:cursor-pointer w-52 hover:text-red-700"><span>Delete</span></th>
                                 </tr>
