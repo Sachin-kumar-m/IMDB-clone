@@ -25,9 +25,9 @@ function Watchlist() {
             .catch((err) => console.error('error:' + err))
             .finally(() => {
                 setTimeout(() => {
-                  setLoading(false)
-                },300)
-              })
+                    setLoading(false)
+                }, 300)
+            })
     }
     useEffect(() => {
         getGeners()
@@ -52,7 +52,6 @@ function Watchlist() {
         // console.log(updatedWatchlist)
         setMedia(updatedWatchlist)
     }
-
     const sortbyRating = () => {
         let temp = [...watchlist]
         const updatedWatchlist = temp.sort((a, b) => a.avg - b.avg)
@@ -87,7 +86,7 @@ function Watchlist() {
             setMedia(filteredValue)
         }
     }
-   
+
     if (isLoading) {
         return <div className="loader absolute top-[50%]"></div>
     }
@@ -118,8 +117,10 @@ function Watchlist() {
                                         {/* <label>Genre(s)</label> */}
                                         <select type="button" onChange={handleFilter}>
                                             <option value="All">GENRE(s)</option>
-                                            {getWatchlistFromlocalStorage().map(({generID}=[])=>{
-                                               return generID.map((geners)=><option key={geners} value={geners}>{generMap[geners]}</option>)
+                                            {getWatchlistFromlocalStorage().map(({ generID } = []) => {
+                                                return generID.map((geners) => {
+                                                    return <option key={geners} value={geners}>{generMap[geners]}</option>
+                                                })
                                             })}
                                         </select>
                                     </th>
@@ -133,7 +134,7 @@ function Watchlist() {
                                         title = "",
                                         avg,
                                         path,
-                                        generID=[],
+                                        generID = [],
                                         date = "N/A",
                                     }) => (
                                         <tr
@@ -157,7 +158,7 @@ function Watchlist() {
                                                 {date}
                                             </td>
                                             <td className="text-xl px-6 py-4 text-center">{avg}</td>
-                                            <td className="text-xl px-6 py-4 max-w-[8rem]">{generID.map(geners=>generMap[geners]).join(", ")}
+                                            <td className="text-xl px-6 py-4 max-w-[8rem]">{generID.map(geners => generMap[geners]).join(", ")}
                                             </td>
                                             <td
                                                 className="text-xl space-x-1 px-6 py-4 text-red-200"
