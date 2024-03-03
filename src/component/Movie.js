@@ -3,15 +3,24 @@ import { useState, useEffect } from "react";
 // Consts
 import { options, BASE_URL, APIKEY, WATCHLIST_KEY, getWatchlistFromlocalStorage } from "../constant.js"
 import { ImSearch } from "react-icons/im";
+import { useDispatch } from "react-redux";
 
+import { add } from "../Slices/MovieSlice.js";
+import { NavLink } from "react-router-dom";
 
 function Movies() {
-
+  //states
   const [movies, setMovies] = useState([])
   const [pageNumber, setPages] = useState(1)
   const [isLoading, setLoading] = useState(true)
-  const [query,setQuery] = useState("")
+  const [query, setQuery] = useState("")
   const [watchList, setList] = useState(getWatchlistFromlocalStorage())
+
+
+  //dispatch\
+  const dispatch = useDispatch()
+
+
   const getMovies = () => {
     setLoading(true)
     fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&api_key=${APIKEY}&page=${pageNumber}`, options)
@@ -21,7 +30,7 @@ function Movies() {
       .finally(() => {
         setTimeout(() => {
           setLoading(false)
-        },200)
+        }, 200)
       })
   };
 
@@ -34,7 +43,7 @@ function Movies() {
       .finally(() => {
         setTimeout(() => {
           setLoading(false)
-        },10)
+        }, 10)
       }
       )
   };
@@ -47,7 +56,7 @@ function Movies() {
       getMovies()
     }
     // eslint-disable-next-line
-  }, [pageNumber,query])
+  }, [pageNumber, query])
 
   const handelNext = () => {
     if (pageNumber === 500) return
@@ -78,7 +87,7 @@ function Movies() {
       path: movieObj.poster_path,
       avg: movieObj.vote_average,
       generID: movieObj.genre_ids,
-      date : movieObj.release_date||movieObj.first_air_date
+      date: movieObj.release_date || movieObj.first_air_date
     },]
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(value))
     setList(value)
@@ -92,14 +101,20 @@ function Movies() {
     let updatedWatchlist = watchList.filter((media) => media.id !== mediaId);
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updatedWatchlist));
     setList(updatedWatchlist);
-  }   
+  }
 
   const handleWatchlist = (movieObj) => {
+
     if (isInLocalStorage(movieObj.id, watchList)) {
       removeMediaFromLocalStorage(movieObj.id)
       return
     }
     setWatchlist(movieObj)
+  }
+
+
+  const handleMovies = (value) => {
+    dispatch(add(value))
   }
 
   return (
@@ -108,32 +123,36 @@ function Movies() {
       <div className="flex justify-end items-center">
         <span><ImSearch /></span>
         <div className="form mr-10">
-          <input value={query} onChange={(e)=>setQuery(e.target.value)} className="input text-xl" placeholder="Search..." required="" type="text" />
-            <span className="input-border"></span>
+          <input value={query} onChange={(e) => setQuery(e.target.value)} className="input text-xl" placeholder="Search..." required="" type="text" />
+          <span className="input-border"></span>
         </div>
       </div>
       {isLoading ? <div className="loader"></div> : (
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap align-middle justify-center">
           {movies.map((movie, index) => {
             const { title = "", name = "", poster_path: path, } = movie;
             return (
+
               <div key={index}>
                 <div className="mx-[20px] mb-[16px] flex space-x-8">
-                  <div onClick={() => handleWatchlist(movie)}
-                    className="cursor-pointer w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
+                  <div
+                    className="w-[160px] relative h-[30vh] bg-cover rounded-[1rem] m-4 md:h-[40vh] md:w-[180px] flex flex-col-reverse hover:shadow-black hover:scale-110 duration-300 hover:shadow-2xl"
                     style={{
                       backgroundImage:
                         `url(${BASE_URL}${path})`
                     }}
                   >
-                    <div className="p-2 bg-black absolute right-1 top-1 text-2xl rounded-[10px]"><button className="hover:scale-150 duration-200 ">{isInLocalStorage(movie.id,watchList)? "❤️":"🤍"}</button></div>
-                    <div className="flex items-center justify-center text-lg md:text-3xl bg-gray-900 bg-opacity-60 p-4 text-white w-full rounded-b-[1rem]">{title || name}</div>
+                    <div className="p-2 bg-black absolute right-1 top-1 text-2xl rounded-[10px]"><button className="hover:scale-150 duration-200 " onClick={() => handleWatchlist(movie)}>{isInLocalStorage(movie.id, watchList) ? "❤️" : "🤍"}</button></div>
+                    <NavLink to={`/movie/${movie.id}`}>
+                      <div onClick={() => handleMovies(movie)} className="flex items-center justify-center text-lg md:text-3xl bg-gray-900 bg-opacity-60 p-4 text-white w-full rounded-b-[1rem] cursor-pointer">{title || name}</div>
+                    </NavLink>
                   </div>
                 </div>
               </div>
             )
           })}
         </div>
+
       )}
 
       <div className="flex justify-around space-x-5 my-5">
